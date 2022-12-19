@@ -6,10 +6,11 @@ import (
 	"log"
 	"os"
 	"strings"
+	"unicode"
 )
 
 func main() {
-	fmt.Printf("%v", LowerPriorities())
+	fmt.Printf("%v", Part1())
 }
 
 func Part1() string {
@@ -27,9 +28,10 @@ func Part1() string {
 		var1 := line[0 : num/2]
 		var2 := line[num/2 : num]
 
-		compare := strings.Compare(var1, var2)
+		// compare := strings.Compare(var1, var2)
 
-		fmt.Printf("%v\n", compare)
+		fmt.Printf("%v\n", var1)
+		fmt.Printf("%v\n", var2)
 
 	}
 
@@ -38,11 +40,22 @@ func Part1() string {
 
 // Utils
 
-func LowerPriorities() map[string]string {
-	priorities := map[string]string{}
+func Priorities(c string) map[string]int {
+	priorities := make(map[string]int)
+	i := 1
+
+	if c == "upper" {
+		i = 27
+	}
 
 	for r := 'a'; r <= 'z'; r++ {
-
+		if c == "upper" {
+			R := unicode.ToUpper(r)
+			priorities[string(R)] = i
+		} else {
+			priorities[string(r)] = i
+		}
+		i++
 	}
 
 	return priorities
