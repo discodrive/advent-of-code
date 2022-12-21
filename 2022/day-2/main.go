@@ -16,12 +16,7 @@ func main() {
 func Part1() int {
 	var score int = 0
 
-	input, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	scanner := bufio.NewScanner(input)
+	scanner := bufio.NewScanner(Input())
 	for scanner.Scan() {
 		// Lose cases - Points assigned for each shape chosen
 		if strings.Contains(scanner.Text(), "X") {
@@ -47,12 +42,7 @@ func Part1() int {
 func Part2() int {
 	var score int = 0
 
-	input, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	scanner := bufio.NewScanner(input)
+	scanner := bufio.NewScanner(Input())
 	for scanner.Scan() {
 		line := scanner.Text()
 		if strings.Contains(line, "X") {
@@ -88,4 +78,14 @@ func Part2() int {
 		}
 	}
 	return score
+}
+
+// Utils
+
+func Input() *os.File {
+	input, err := os.Open("input.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return input
 }

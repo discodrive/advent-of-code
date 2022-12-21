@@ -10,17 +10,13 @@ import (
 )
 
 func main() {
-	fmt.Printf("%v", Part1())
+	fmt.Printf("%v", Part2())
 }
 
 func Part1() int {
-	var i int = 0
+	var score int = 0
 
-	input, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	scanner := bufio.NewScanner(input)
+	scanner := bufio.NewScanner(Input())
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -29,13 +25,40 @@ func Part1() int {
 		var1 := line[0 : num/2]
 		var2 := line[num/2 : num]
 
-		i += Sum(Total(var1, var2))
+		score += Sum(Score(var1, var2))
 
 	}
-	return i
+	return score
+}
+
+func Part2() int {
+	score := 0
+	counter := 0
+	i := 0
+	scanner := bufio.NewScanner(Input())
+
+	for scanner.Scan() {
+		if counter != 3 {
+			fmt.Println(i)
+			counter++
+		} else {
+			counter = 0
+		}
+		i++
+	}
+
+	return score
 }
 
 // Utils
+
+func Input() *os.File {
+	input, err := os.Open("input.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	return input
+}
 
 func Priorities() map[string]int {
 	priorities := make(map[string]int)
@@ -51,7 +74,7 @@ func Priorities() map[string]int {
 	return priorities
 }
 
-func Total(var1 string, var2 string) []int {
+func Score(var1 string, var2 string) []int {
 	i := []int{}
 	for _, v := range var1 {
 		if strings.Contains(var2, string(v)) {
