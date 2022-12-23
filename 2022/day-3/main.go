@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"strings"
@@ -32,28 +33,32 @@ func Part1() int {
 }
 
 func Part2() int {
-	score := 0
-	counter := 0
 	i := 0
-	scanner := bufio.NewScanner(Input())
-
-	for scanner.Scan() {
-		if counter != 3 {
-			fmt.Println(i)
-			counter++
-		} else {
-			counter = 0
+	group := make([]string, 3)
+	scanner := bufio.NewReader(Input())
+	for {
+		line, _, err := scanner.ReadLine()
+		if err != nil {
+			if err == io.EOF {
+				break
+			}
 		}
+		group[i] = string(line)
 		i++
-	}
+		if i == 3 {
+			Badge(group)
+			i = 0
+			continue
+		}
 
-	return score
+	}
+	return 0
 }
 
 // Utils
 
 func Input() *os.File {
-	input, err := os.Open("input.txt")
+	input, err := os.Open("demo-input.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -85,6 +90,23 @@ func Score(var1 string, var2 string) []int {
 	return Unique(i)
 }
 
+func Badge(group []string) int {
+	i := 0
+	j := 1
+	s := []string{}
+	for _, v := range group[i] {
+		if strings.Contains(group[j], string(v)) {
+			s = append(s, string(v))
+		}
+	}
+
+	for _, val := range s {
+		int := Priorities()[string(val)]
+
+	}
+	return 0
+}
+
 func Unique(arr []int) []int {
 	occurred := map[int]bool{}
 	result := []int{}
@@ -104,11 +126,3 @@ func Sum(arr []int) int {
 	}
 	return sum
 }
-
-// 1. Find the number of characters in each line of input
-// 2. Split it in half and assign each half to a variable
-// 3. Check if anything in var1 matches in var2
-// 4. Create a map of characters a-z with priorities of 1-26
-// 5. Create a map of characters A-Z with priorities of 27-52
-// 6. Compare matched results from step 3 against the map to find the priority number for each character
-// 7. Find the sum of all of the resulting priority numbers
